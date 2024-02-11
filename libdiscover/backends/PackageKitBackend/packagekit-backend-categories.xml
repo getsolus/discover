@@ -548,6 +548,26 @@
       </Or>
     </Include>
   </Menu>
+
+<Menu>
+  <Name>Hardware Drivers</Name>
+  <Icon>cpu</Icon>
+  <Include>
+    <And>
+      <Category>Drivers</Category>
+    </And>
+  </Include>
+  <Menu>
+  <Name>Drivers For This Device</Name>
+    <Icon>cpu</Icon>
+    <Include>
+    <And>
+      <Category>ThisDeviceDrivers</Category>
+    </And>
+  </Include>
+  </Menu>
+</Menu>
+
   <Menu>
     <Name>Plasma Addons</Name>
     <Icon>plasma</Icon>

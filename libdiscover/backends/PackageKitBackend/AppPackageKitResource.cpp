@@ -8,20 +8,23 @@
 #include "utils.h"
 
 #ifdef DISCOVER_USE_STABLE_APPSTREAM
+#include <AppStreamQt5/component.h>
 #include <AppStreamQt5/developer.h>
 #include <AppStreamQt5/icon.h>
 #include <AppStreamQt5/image.h>
 #include <AppStreamQt5/release.h>
 #include <AppStreamQt5/screenshot.h>
+#include <AppStreamQt5/systeminfo.h>
 #include <AppStreamQt5/version.h>
 #else
+#include <AppStreamQt/component.h>
 #include <AppStreamQt/icon.h>
 #include <AppStreamQt/image.h>
 #include <AppStreamQt/release.h>
 #include <AppStreamQt/screenshot.h>
+#include <AppStreamQt/systeminfo.h>
 #include <AppStreamQt/version.h>
 #endif
-
 #include <KLocalizedString>
 #include <KService>
 #include <PackageKit/Daemon>
@@ -113,12 +116,37 @@ QStringList AppPackageKitResource::mimetypes() const
 
 static constexpr auto s_addonKinds = {AppStream::Component::KindAddon, AppStream::Component::KindCodec};
 
+static bool hasDeviceModaliases(const AppStream::Component &comp)
+{
+    const auto mods = comp.provided(AppStream::Provided::KindModalias);
+    auto sys = AppStream::SystemInfo();
+    for (const auto &mod : mods.items()) {
+        if (sys.hasDeviceMatchingModalias(mod)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 QStringList AppPackageKitResource::categories()
 {
-    auto cats = m_appdata.categories();
-    if (!kContainsValue(s_addonKinds, m_appdata.kind()))
-        cats.append(QStringLiteral("Application"));
-    return cats;
+    switch (m_appdata.kind()) {
+    case AppStream::Component::KindDriver: {
+        auto cats = QStringList();
+        cats.reserve(2);
+        cats.append(QStringLiteral("Drivers"));
+        if (hasDeviceModaliases(m_appdata)) {
+            cats.append("ThisDeviceDrivers");
+        }
+        return cats;
+    }
+    default: {
+        auto cats = m_appdata.categories();
+        if (!kContainsValue(s_addonKinds, m_appdata.kind()))
+            cats.append(QStringLiteral("Application"));
+        return cats;
+    }
+    }
 }
 
 QString AppPackageKitResource::comment()
