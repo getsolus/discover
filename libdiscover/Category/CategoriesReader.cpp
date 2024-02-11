@@ -8,6 +8,7 @@
 #include "Category.h"
 #include "libdiscover_debug.h"
 #include <QCoreApplication>
+#include <QDir>
 #include <QFile>
 #include <QStandardPaths>
 #include <QXmlStreamReader>
@@ -17,8 +18,7 @@
 
 QVector<Category *> CategoriesReader::loadCategoriesFile(AbstractResourcesBackend *backend)
 {
-    QString path = QStandardPaths::locate(QStandardPaths::GenericDataLocation,
-                                          QStringLiteral("libdiscover/categories/") + backend->name() + QStringLiteral("-categories.xml"));
+    QString path = QDir::currentPath() + QStringLiteral("/libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml");
     if (path.isEmpty()) {
         auto cat = backend->category();
         if (cat.isEmpty())
