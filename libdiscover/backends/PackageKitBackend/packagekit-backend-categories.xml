@@ -547,7 +547,18 @@
         <Category>System</Category>
       </Or>
     </Include>
+
+    <Menu>
+      <Name>Hardware Drivers</Name>
+      <Icon>cpu</Icon>
+      <Include>
+        <And>
+          <PkgSection>Drivers</PkgSection>
+        </And>
+      </Include>
+    </Menu>
   </Menu>
+
   <Menu>
     <Name>Plasma Addons</Name>
     <Icon>plasma</Icon>
