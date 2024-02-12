@@ -109,6 +109,14 @@ QStringList AppPackageKitResource::categories()
     return cats;
 }
 
+QString AppPackageKitResource::section()
+{
+    if (m_appdata.kind() == AppStream::Component::KindDriver) {
+        return "Drivers";
+    }
+    return PackageKitResource::section();
+}
+
 QString AppPackageKitResource::comment()
 {
     const auto summary = m_appdata.summary();
