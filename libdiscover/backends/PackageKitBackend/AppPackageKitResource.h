@@ -22,7 +22,6 @@ public:
     QVariant icon() const override;
     QStringList mimetypes() const override;
     QStringList categories() override;
-    QString section() override;
     QString longDescription() override;
     QUrl url() const override;
     QUrl homepage() override;

@@ -6,6 +6,7 @@
 
 #include "AppPackageKitResource.h"
 #include "utils.h"
+#include <AppStreamQt/component.h>
 #include <AppStreamQt/icon.h>
 #include <AppStreamQt/image.h>
 #include <AppStreamQt/release.h>
@@ -103,18 +104,15 @@ static constexpr auto s_addonKinds = {AppStream::Component::KindAddon, AppStream
 
 QStringList AppPackageKitResource::categories()
 {
-    auto cats = m_appdata.categories();
-    if (!kContainsValue(s_addonKinds, m_appdata.kind()))
-        cats.append(QStringLiteral("Application"));
-    return cats;
-}
-
-QString AppPackageKitResource::section()
-{
-    if (m_appdata.kind() == AppStream::Component::KindDriver) {
-        return "Drivers";
+    switch (m_appdata.kind()) {
+    case AppStream::Component::KindDriver:
+        return {QStringLiteral("Drivers")};
+    default:
+        auto cats = m_appdata.categories();
+        if (!kContainsValue(s_addonKinds, m_appdata.kind()))
+            cats.append(QStringLiteral("Application"));
+        return cats;
     }
-    return PackageKitResource::section();
 }
 
 QString AppPackageKitResource::comment()

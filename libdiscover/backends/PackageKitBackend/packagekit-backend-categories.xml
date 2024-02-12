@@ -553,7 +553,7 @@
       <Icon>cpu</Icon>
       <Include>
         <And>
-          <PkgSection>Drivers</PkgSection>
+          <Category>Drivers</Category>
         </And>
       </Include>
     </Menu>
